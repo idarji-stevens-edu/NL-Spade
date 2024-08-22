@@ -1,8 +1,8 @@
 clc; clear all; close all;
 
 % Initialize zero confidence intervals in memory
-C_HG = zeros(10,5,4); %(index of experimental run, source separation, relative misalignment)
-C_O = zeros(10,5,4);
+C_HG = zeros(10,4,5); %(index of experimental run, source separation, relative misalignment)
+C_O = zeros(10,4,5);
 
 for i = 1:10 % index of experimental run
     load(sprintf("%s.mat",num2str(i)));
@@ -41,13 +41,25 @@ for i = 1:10 % index of experimental run
 
 end
 
+%% Statistical Analysis
+
 C_HG_mean = squeeze(mean(C_HG,1));
-C_HG_min = squeeze(min(C_HG,[],1));
-C_HG_max = squeeze(max(C_HG,[],1));
 
 C_O_mean = squeeze(mean(C_O,1));
-C_O_min = squeeze(min(C_O,[],1));
-C_O_max = squeeze(max(C_O,[],1));
+
+e_HG = zeros(length(t_s_by_sigma),length(t_c_by_t_s),2);
+e_O = zeros(length(t_s_by_sigma),length(t_c_by_t_s),2);
+
+for j = 1: length(t_s_by_sigma)
+    for k = 1:length(t_c_by_t_s)
+        pd_HG = fitdist(C_HG(:,j,k),'Normal');
+        pd_O = fitdist(C_O(:,j,k),'Normal');
+        e_HG(j,k,:) = paramci(pd_HG,'Parameter','sigma','Alpha',0.05);
+        e_O(j,k,:) = paramci(pd_O,'Parameter','sigma','Alpha',0.05);
+    end
+end
+
+% save('C_500','C_HG_mean','C_O_mean','e_HG','e_O','t_s_by_sigma','t_c_by_t_s')
 
 %% Plot Results
 
@@ -60,8 +72,8 @@ tiledlayout(2,2);
 for i = 1:length(t_s_by_sigma)
     nexttile;
     hold on; box on;
-    errorbar(t_c_by_t_s,C_HG_mean(i,:),C_HG_mean(i,:)-C_HG_min(i,:),C_HG_max(i,:)-C_HG_mean(i,:),'--*','LineWidth',4,'MarkerSize',20)
-    errorbar(t_c_by_t_s,C_O_mean(i,:),C_O_mean(i,:)-C_O_min(i,:),C_O_max(i,:)-C_O_mean(i,:),'-o','LineWidth',4,'MarkerSize',20)
+    errorbar(t_c_by_t_s,C_HG_mean(i,:),e_HG(i,:,1),e_HG(i,:,2),'--*','LineWidth',4,'MarkerSize',20)
+    errorbar(t_c_by_t_s,C_O_mean(i,:),e_O(i,:,1),e_O(i,:,2),'-o','LineWidth',4,'MarkerSize',20)
     xticks(t_c_by_t_s);
     leg = legend('HG10 Mode','Optimized Mode','Location','SouthWest','FontSize',20);
     if i/2 > 1
