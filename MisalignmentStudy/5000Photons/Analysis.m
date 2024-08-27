@@ -54,14 +54,12 @@ e_O = zeros(length(t_s_by_sigma),length(t_c_by_t_s),2);
 
 for j = 1: length(t_s_by_sigma)
     for k = 1:length(t_c_by_t_s)
-        pd_HG = fitdist(C_HG(:,j,k),'Normal');
-        pd_O = fitdist(C_O(:,j,k),'Normal');
-        e_HG(j,k,:) = paramci(pd_HG,'Parameter','sigma','Alpha',0.05);
-        e_O(j,k,:) = paramci(pd_O,'Parameter','sigma','Alpha',0.05);
+        pd_HG = fitdist(C_HG(:,j,k),'Normal'); % Distribution of 10 experiments
+        pd_O = fitdist(C_O(:,j,k),'Normal');% Distribution of 10 experiments
+        e_HG(j,k,:) = paramci(pd_HG,'Parameter','sigma','Alpha',0.05); % 95% confidence intervals of the distribution
+        e_O(j,k,:) = paramci(pd_O,'Parameter','sigma','Alpha',0.05); % 95% confidence intervals of the distribution
     end
 end
-
-% save('C_5000','C_HG_mean','C_O_mean','e_HG','e_O','t_s_by_sigma','t_c_by_t_s')
 
 %% Plot Results
 

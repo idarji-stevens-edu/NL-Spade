@@ -50,10 +50,10 @@ e_O = zeros(length(t_s_by_sigma),length(eps),2);
 
 for j = 1: length(t_s_by_sigma)
     for k = 1:length(eps)
-        pd_HG = fitdist(C_HG(:,j,k),'Normal');
-        pd_O = fitdist(C_O(:,j,k),'Normal');
-        e_HG(j,k,:) = paramci(pd_HG,'Parameter','sigma','Alpha',0.05);
-        e_O(j,k,:) = paramci(pd_O,'Parameter','sigma','Alpha',0.05);
+        pd_HG = fitdist(C_HG(:,j,k),'Normal'); % Distribution of 10 experiments
+        pd_O = fitdist(C_O(:,j,k),'Normal'); % Distribution of 10 experiments
+        e_HG(j,k,:) = paramci(pd_HG,'Parameter','sigma','Alpha',0.05); % 95% confidence intervals of the distribution
+        e_O(j,k,:) = paramci(pd_O,'Parameter','sigma','Alpha',0.05); % 95% confidence intervals of the distribution
     end
 end
 
@@ -74,30 +74,22 @@ for i = 1:2
     xticks(eps);
     xlim([0.5 0.8]);
     title(sprintf('(%s) \x03B8_s/\x3C3 = %.2f',t_ind(i),t_s_by_sigma(i)),'FontSize',40,'FontWeight','Bold')
-    % text(0.05,0.2,sprintf('\x03B8_s/\x3C3: %.2f',t_s_by_sigma(i)),'Units','Normalized','FontSize',30)
     xlim([0.48 0.82]);
     xticks(0.5:0.1:0.8)
 
     if i == 1
         ylim([40 100.5])
         yticks(40:20:100)
+        % text(0.49,52,sprintf('(%s) \x03B8_s/\x3C3 = %.2f',t_ind(i),t_s_by_sigma(i)),'FontSize',30,'Fontweight','bold');
     end
     if i == 2
         ylim([80 100.5])
         yticks(80:5:100)
+        % text(0.49,84,sprintf('(%s) \x03B8_s/\x3C3 = %.2f',t_ind(i),t_s_by_sigma(i)),'FontSize',30,'Fontweight','bold');
     end
-    if i == 3
-        ylim([85 100.5])
-        yticks(85:5:100)
-    end
-    if i == 4
-        ylim([85 100.5])
-        yticks(85:5:100)
-    end
-    % if i == 2
-        leg = legend('HG10','Opt','Location','Southwest','FontSize',30);
 
-    % end
+    leg = legend('HG10','Opt','Location','Southwest','FontSize',30);
+
     if i/2 > 1
         xlabel('\epsilon','FontSize',50,'FontWeight','Bold')
     end
@@ -106,7 +98,7 @@ for i = 1:2
     end
 end
 
-exportgraphics(f1,'bgt_fid1.png','Resolution',300);
+% exportgraphics(f1,'bgt_fid1.png','Resolution',300);
 
 f2 = figure('WindowState','maximized');
 
@@ -120,25 +112,18 @@ for i = 3:4
     xticks(eps);
     xlim([0.5 0.8]);
     title(sprintf('(%s) \x03B8_s/\x3C3 = %.2f',t_ind(i),t_s_by_sigma(i)),'FontSize',40,'FontWeight','Bold')
-    % text(0.05,0.2,sprintf('\x03B8_s/\x3C3: %.2f',t_s_by_sigma(i)),'Units','Normalized','FontSize',30)
     xlim([0.48 0.82]);
     xticks(0.5:0.1:0.8)
 
-    if i == 1
-        ylim([40 100.5])
-        yticks(40:20:100)
-    end
-    if i == 2
-        ylim([85 100.5])
-        yticks(80:5:100)
-    end
     if i == 3
         ylim([90 100.5])
         yticks(85:5:100)
+        % text(0.49,92.25,sprintf('(%s) \x03B8_s/\x3C3 = %.2f',t_ind(i),t_s_by_sigma(i)),'FontSize',30,'Fontweight','bold');
     end
     if i == 4
         ylim([90 100.5])
         yticks(85:5:100)
+        % text(0.49,92.25,sprintf('(%s) \x03B8_s/\x3C3 = %.2f',t_ind(i),t_s_by_sigma(i)),'FontSize',30,'Fontweight','bold');
     end
 
     leg = legend('HG10','Opt','Location','Southwest','FontSize',30);
@@ -151,17 +136,17 @@ for i = 3:4
     end
 end
 
-exportgraphics(f2,'bgt_fid2.png','Resolution',300);
+% exportgraphics(f2,'bgt_fid2.png','Resolution',300);
 
 %% Combined figures
 
-i1 = imread("bgt_fid1.png");
-i2 = imread("bgt_fid2.png");
-
-i1 = padarray(i1,[ceil((3000-size(i1,1))/2) ceil((5750-size(i1,2))/2) 0],255);
-i2 = padarray(i2,[ceil((3000-size(i2,1))/2) ceil((5750-size(i2,2))/2) 0],255);
-
-i = cat(1,i1(1:3000,1:5750,:),i2(1:3000,1:5750,:));
-close all;
-
-imwrite(i,'bgt_fid.png')
+% i1 = imread("bgt_fid1.png");
+% i2 = imread("bgt_fid2.png");
+% 
+% i1 = padarray(i1,[ceil((3000-size(i1,1))/2) ceil((5750-size(i1,2))/2) 0],255);
+% i2 = padarray(i2,[ceil((3000-size(i2,1))/2) ceil((5750-size(i2,2))/2) 0],255);
+% 
+% i = cat(1,i1(1:3000,1:5750,:),i2(1:3000,1:5750,:));
+% close all;
+% 
+% imwrite(i,'bgt_fid.png')

@@ -31,7 +31,6 @@ for i = 1:2
     xticks(t_c_by_t_s);
     yticks(0:50:100)
     title(sprintf('(%s) \x03B8_s/\x3C3 = %.2f',t_ind(i),t_s_by_sigma(i)),'FontSize',40,'Fontweight','bold')
-    % text(0.75,90,sprintf('\x03B8_s/\x3C3: %.2f',C_5000.t_s_list(i)),'FontSize',30)
     % if i == 1
         [lh, labelhandles] = legend({'HG10','Opt'},'FontSize',30);
         lh.Position = [gca().Position(1)+(0.67*gca().Position(3))   gca().Position(2)+0.64    0.11   0.11];
@@ -64,6 +63,7 @@ for i = 1:2
     xticks(0:0.25:1.00)
     yticks(0:25:100)
     ylim([-10 110])
+    % text(-0.05,5,sprintf('(%s) \x03B8_s/\x3C3 = %.2f',t_ind(i),t_s_by_sigma(i)),'FontSize',30,'Fontweight','bold');
 end
 
 exportgraphics(f1,sprintf('mis_fid%i.png',i/2),'Resolution',300);
@@ -87,7 +87,6 @@ for i = 3:4
     xticks(t_c_by_t_s);
     yticks(0:50:100)
     title(sprintf('(%s) \x03B8_s/\x3C3 = %.2f',t_ind(i),t_s_by_sigma(i)),'FontSize',40,'Fontweight','bold')
-    % text(0.75,90,sprintf('\x03B8_s/\x3C3: %.2f',C_5000.t_s_list(i)),'FontSize',30)
     % if i == 1
         [lh, labelhandles] = legend({'HG10','Opt'},'FontSize',30);
         lh.Position = [gca().Position(1)+(0.67*gca().Position(3))   0.75   0.11   0.11];
@@ -120,6 +119,7 @@ for i = 3:4
     xticks(0:0.25:1.00)
     yticks(0:25:100)
     ylim([-10 110])
+    % text(-0.05,5,sprintf('(%s) \x03B8_s/\x3C3 = %.2f',t_ind(i),t_s_by_sigma(i)),'FontSize',30,'Fontweight','bold');
 end
 
 exportgraphics(f2,sprintf('mis_fid%i.png',i/2),'Resolution',300)
@@ -129,10 +129,10 @@ exportgraphics(f2,sprintf('mis_fid%i.png',i/2),'Resolution',300)
 i1 = imread("mis_fid1.png");
 i2 = imread("mis_fid2.png");
 
-i1 = padarray(i1,[ceil((3000-size(i1,1))/2) ceil((5500-size(i1,2))/2) 0],255);
-i2 = padarray(i2,[ceil((3000-size(i2,1))/2) ceil((5500-size(i2,2))/2) 0],255);
+i1 = padarray(i1,[ceil((3000-size(i1,1))/2) ceil((5550-size(i1,2))/2) 0],255);
+i2 = padarray(i2,[ceil((3000-size(i2,1))/2) ceil((5550-size(i2,2))/2) 0],255);
 
-i = cat(1,i1(1:3000,1:5500,:),i2(1:3000,1:5500,:));
+i = cat(1,i1(1:3000,1:5550,:),i2(1:3000,1:5550,:));
 close all;
 
 imwrite(i,'mis_fid.png')
